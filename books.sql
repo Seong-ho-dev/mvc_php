@@ -1,0 +1,46 @@
+CREATE DATABASE IF NOT EXISTS books CHARSET utf8mb4;
+
+USE books;
+
+CREATE TABLE IF NOT EXISTS users(
+id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+firstname VARCHAR(50) NOT NULL,
+lastname VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE NOT NULL,
+`password` VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS category(
+id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+category_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS book(
+id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+title VARCHAR(50) NOT NULL,
+summary VARCHAR(255) NOT NULL,
+author VARCHAR(50) NOT NULL,
+published_at DATE NOT NULL,
+cover VARCHAR(255),
+category_id INT);
+
+CREATE TABLE IF NOT EXISTS book_users(
+users_id INT,
+book_id INT,
+PRIMARY KEY(users_id, book_id)
+); 
+
+ALTER TABLE book
+ADD CONSTRAINT fk_categorize_category
+FOREIGN KEY(category_id)
+REFERENCES category(id);
+
+ALTER TABLE book_users
+ADD CONSTRAINT fk_possess_book
+FOREIGN KEY(book_id)
+REFERENCES book(id);
+
+ALTER TABLE book_users
+ADD CONSTRAINT fk_possess_users
+FOREIGN KEY(users_id)
+REFERENCES users(id);
