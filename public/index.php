@@ -1,11 +1,12 @@
 <?php
 
 //imports des variables d'environnements
-
+include '../env.php';
 //imports des tools
-
+include '../tools/bdd_connect.php';
 //imports des controllers
 include '../controller/home_controller.php';
+include '../controller/category_controller.php';
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 
@@ -21,6 +22,10 @@ switch ($path) {
         break;
     case '/logout':
         echo "déconnexion";
+        break;
+    case '/category/new':
+        add_category();
+        break;
     default:
         echo "erreur 404";
         break;
