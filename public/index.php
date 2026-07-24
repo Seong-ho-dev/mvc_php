@@ -1,9 +1,11 @@
 <?php
-
+//import des outils
+include '../vendor/autoload.php';
 //imports des variables d'environnements
 include '../env.php';
 //imports des tools
 include '../tools/bdd_connect.php';
+include '../tools/security.php';
 //imports des controllers
 include '../controller/home_controller.php';
 include '../controller/category_controller.php';

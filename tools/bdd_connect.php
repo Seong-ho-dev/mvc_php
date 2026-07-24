@@ -9,12 +9,3 @@ function connect_bdd() : PDO {
     );
 }
 
-function sanitize(string $str) : string {
-    return htmlentities(
-        htmlspecialchars(
-            strip_tags(
-                trim($str)
-            )
-        )
-    );
-}
