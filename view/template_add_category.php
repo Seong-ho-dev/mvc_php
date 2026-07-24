@@ -14,6 +14,7 @@
     <main class="container-fluid">
         <h1>Ajouter une categorie</h1>
         <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
             <fieldset>
                 <label for="category_name">Saisir le nom de la categorie</label>
                 <input type="text" name="category_name">
