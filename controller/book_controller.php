@@ -1,25 +1,42 @@
 <?php
 
-//include '../model/category.php';
-include '../model/book.php';
-
-function add_book() {
+function add_book(): void
+{
+    is_granted();
     $categories = get_all_categories();
-    
+
     //gestion du formulaire
     if (isset($_POST["submit"])) {
-        //vérifier si les champs existe
-    // champ manquant ou vide → erreur
-    if (!empty($_POST["title"]) && !empty($_POST["summary"]) && !empty($_POST["author"]) && !empty($_POST["published_at"]) && !empty($_POST["category_id"])) { 
-        //nettoyer les données
-            $title = trim($_POST["title"]);
-            $summary = trim($_POST["summary"]);
-            $author = trim($_POST["author"]);
-            $published_at = trim($_POST["published_at"]);
-            $category_id = (int) $_POST["category_id"];
-    //tester si le champs summary est plus petit que 255
-    if(strlen($summary)<255){}
-    }
+
+        if (isset($_POST["csrf_token"]) && isCsrfTokenValid($_POST)) {
+
+            //vérifier si les champs existe
+            if (
+                !empty($_POST["title"]) &&
+                !empty($_POST["summary"]) &&
+                !empty($_POST["author"]) &&
+                !empty($_POST["published_at"]) &&
+                !empty($_POST["category_id"])
+            ) {
+                //nettoyer les données
+                $_POST = sanitize_array($_POST);
+                //tester si le champs summary est plus petit que 255
+                if (strlen($_POST["summary"]) <= 255) {
+                    //ajouter à la bdd
+                    if (create_book($_POST) > 0) {
+                        $message = "Le livre " . $_POST["title"] . " a été ajouté";
+                    } else {
+                        $message = "Erreur d'enregistrement";
+                    }
+                } else {
+                    $message = "Le résumé est trop long";
+                }
+            } else {
+                $message = "Veuillez remplir tous les champs du formulaire";
+            }
+        } else {
+            $message = "Le token csrf est invalide";
+        }
     }
 }
         // //ajouter à la bdd
